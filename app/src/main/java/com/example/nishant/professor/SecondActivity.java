@@ -7,11 +7,14 @@ import android.support.v7.widget.*;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,8 @@ public class SecondActivity extends AppCompatActivity {
     private RecyclerView recycler_view;
     private List<ProfessorList> professorLists =new ArrayList<>();
     private ProfessorRecyclerAdapter adapter;
+    private FirebaseAuth mfirebaseAuth;
+    private String department_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,17 +37,12 @@ public class SecondActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-        final String department_name;
         Intent intent =getIntent();
-        department_name=intent.getExtras().toString();
+        department_name=intent.getStringExtra("DEPARTMENT");
 
         mfirebaseDatabase=FirebaseDatabase.getInstance();
 
-        mdatabaseRefernece=mfirebaseDatabase.getReference().child(department_name).push();
+        mdatabaseRefernece=mfirebaseDatabase.getReference().child(department_name);
 
 
 
@@ -70,41 +70,33 @@ public class SecondActivity extends AppCompatActivity {
         }));
 
 
-
-
-
-        mchildEventListener =new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                ProfessorList professorList=dataSnapshot.getValue(ProfessorList.class);
-                  professorLists.add(professorList);
-                  adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-        mdatabaseRefernece.addChildEventListener(mchildEventListener);
+        prepareProfessorData();
 
     }
 
+
+    public void prepareProfessorData(){
+       // mdatabaseRefernece.child(department_name);
+        //mdatabaseRefernece.setValue("nishant");
+
+  mdatabaseRefernece.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(DataSnapshot dataSnapshot) {
+          ProfessorList professorList =dataSnapshot.getValue(ProfessorList.class);
+          professorLists.add(professorList);
+          adapter.notifyDataSetChanged();
+
+      }
+
+      @Override
+      public void onCancelled(DatabaseError databaseError) {
+
+      }
+  });
+
+        adapter.notifyDataSetChanged();
+
+    }
 
 
 }

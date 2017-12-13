@@ -60,7 +60,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view, int position) {
                 DepartmentList departmentList = departmentLists.get(position);
                 Toast.makeText(MainActivity.this,departmentList.getDepartment_name(),Toast.LENGTH_SHORT).show();
-
+                  Intent intent =new Intent(MainActivity.this,SecondActivity.class);
+                  intent.putExtra("DEPARTMENT",departmentList.getDepartment_name());
+                  startActivity(intent);
             }
 
             @Override

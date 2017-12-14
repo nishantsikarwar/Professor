@@ -39,12 +39,11 @@ public class SecondActivity extends AppCompatActivity {
 
         Intent intent =getIntent();
         department_name=intent.getStringExtra("DEPARTMENT");
+     //   mfirebaseDatabase=FirebaseDatabase.getInstance();
+       // mdatabaseRefernece=mfirebaseDatabase.getReference().child(department_name).push();
 
-        mfirebaseDatabase=FirebaseDatabase.getInstance();
-
-        mdatabaseRefernece=mfirebaseDatabase.getReference().child(department_name);
-
-
+    //  SecondActivity secondActivity =new SecondActivity()
+       //      putProfessorData();
 
         recycler_view=(RecyclerView)findViewById(R.id.recycler_view);
 
@@ -69,32 +68,64 @@ public class SecondActivity extends AppCompatActivity {
             }
         }));
 
-
         prepareProfessorData();
 
     }
 
 
     public void prepareProfessorData(){
-       // mdatabaseRefernece.child(department_name);
-        //mdatabaseRefernece.setValue("nishant");
+        mfirebaseDatabase=FirebaseDatabase.getInstance();
+        mdatabaseRefernece= mfirebaseDatabase.getReference().child(department_name);
 
-  mdatabaseRefernece.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(DataSnapshot dataSnapshot) {
-          ProfessorList professorList =dataSnapshot.getValue(ProfessorList.class);
-          professorLists.add(professorList);
-          adapter.notifyDataSetChanged();
+ mchildEventListener=new ChildEventListener() {
+     @Override
+     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-      }
 
-      @Override
-      public void onCancelled(DatabaseError databaseError) {
-
-      }
-  });
+             ProfessorList professorList = dataSnapshot.getValue(ProfessorList.class);
+             professorLists.add(professorList);
 
         adapter.notifyDataSetChanged();
+     }
+
+     @Override
+     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+     }
+
+     @Override
+     public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+     }
+
+     @Override
+     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+     }
+
+     @Override
+     public void onCancelled(DatabaseError databaseError) {
+
+           }
+
+        };
+ mdatabaseRefernece.addChildEventListener(mchildEventListener);
+
+        adapter.notifyDataSetChanged();
+
+    }
+
+    public void putProfessorData(){
+
+        mfirebaseDatabase=FirebaseDatabase.getInstance();
+
+        mdatabaseRefernece=mfirebaseDatabase.getReference().child(department_name).push();
+
+       ProfessorList professorList = new ProfessorList();
+       professorList.setProfessor_name("Pratham");
+       professorList.setProfessor_status("1");
+
+       mdatabaseRefernece.setValue(professorList);
 
     }
 

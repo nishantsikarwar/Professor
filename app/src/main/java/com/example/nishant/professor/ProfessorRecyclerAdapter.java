@@ -17,10 +17,11 @@ public class ProfessorRecyclerAdapter extends RecyclerView.Adapter<ProfessorRecy
     private List<ProfessorList> professorLists;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView professor_name;
+        public TextView professor_name,professor_status;
         public MyViewHolder(View view) {
             super(view);
             professor_name=view.findViewById(R.id.professor_name);
+            professor_status=view.findViewById(R.id.professor_status);
         }
     }
 
@@ -40,6 +41,7 @@ public class ProfessorRecyclerAdapter extends RecyclerView.Adapter<ProfessorRecy
     public void onBindViewHolder(ProfessorRecyclerAdapter.MyViewHolder holder, int position) {
         ProfessorList professorList = professorLists.get(position);
         holder.professor_name.setText(professorList.getProfessor_name());
+        holder.professor_status.setText(professorList.getProfessor_status());
     }
 
     @Override

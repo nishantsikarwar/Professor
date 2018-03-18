@@ -42,7 +42,7 @@ public class SecondActivity extends AppCompatActivity {
      //   mfirebaseDatabase=FirebaseDatabase.getInstance();
        // mdatabaseRefernece=mfirebaseDatabase.getReference().child(department_name).push();
 
-    //  SecondActivity secondActivity =new SecondActivity()
+    //  SecondActivity secondActivity =new SecondActivity();
        //      putProfessorData();
 
         recycler_view=(RecyclerView)findViewById(R.id.recycler_view);

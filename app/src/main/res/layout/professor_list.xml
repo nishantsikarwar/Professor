@@ -11,8 +11,10 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:hint="@string/professor_name"
-        android:textSize="17dp"
-        android:background="@android:color/holo_green_light"/>
+        android:textSize="17dp">
+
+    </TextView>
+
     <TextView
         android:id="@+id/professor_status"
         android:layout_width="40dp"
